@@ -1,3 +1,5 @@
+import Layout from "@app/components/Layout/Layout";
+import TableTodo from "@app/modules/todo/TableTodo";
 import { useSession } from "next-auth/react";
 
 export default function Dashboard() {
@@ -7,5 +9,9 @@ export default function Dashboard() {
     return <p>Loading...</p>;
   }
 
-  return <h1>Welcome, {session.user.email}!</h1>;
+  return (
+    <Layout>
+      <TableTodo />
+    </Layout>
+  );
 }

@@ -44,7 +44,7 @@ export default function LoginContainer(): JSX.Element {
       setSnackbarMessage("Invalid email or password");
       setSnackbarOpen(true);
     } else {
-      window.location.href = "/dashboard";
+      window.location.href = "/home";
     }
   };
 

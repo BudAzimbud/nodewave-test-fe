@@ -16,11 +16,11 @@ export default NextAuth({
             email: credentials?.email,
             password: credentials?.password,
           });
-
+          console.log(res.data)
           const user = res.data.content;
 
           if (res.data.content) {
-            return user;  
+            return {...user.user,token: user.token};  
           }
           return null;
         } catch (error) {

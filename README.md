@@ -1,3 +1,11 @@
+## Example ENV Can copas from here
+
+```
+NEXTAUTH_SECRET=uRxuw1xRFlZo5rfo8zjyyJCZavDtSXPiSL59ODIaYu8
+NEXTAUTH_URL=http://localhost:3000
+URL_API=https://fe-test-api.nwappservice.com
+```
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
 ## Getting Started

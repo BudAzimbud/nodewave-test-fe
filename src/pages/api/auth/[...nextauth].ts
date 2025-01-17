@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
+import api from "@app/utils/api";
 
 export default NextAuth({
   providers: [
@@ -12,15 +13,13 @@ export default NextAuth({
       },
       async authorize(credentials) {
         try {
-          const res = await axios.post(`${process.env.urlApi}/login`|| '', {
+          const res = await axios.post(`${process.env.urlApi}/login` || "", {
             email: credentials?.email,
             password: credentials?.password,
           });
-          console.log(res.data)
           const user = res.data.content;
-
           if (res.data.content) {
-            return {...user.user,token: user.token};  
+            return { ...user.user, token: user.token };
           }
           return null;
         } catch (error) {

@@ -1,4 +1,5 @@
 import Layout from "@app/components/Layout/Layout";
+import { TableProvider } from "@app/components/Table/TableProvider";
 import TableTodo from "@app/modules/todo/TableTodo";
 import { useSession } from "next-auth/react";
 
@@ -11,7 +12,9 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <TableTodo />
+      <TableProvider>
+        <TableTodo />
+      </TableProvider>
     </Layout>
   );
 }

@@ -1,29 +1,27 @@
 import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
-  palette: {},
   components: {
     MuiTextField: {
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
-              borderColor: "#50B5FF", 
-              borderRadius:'10px'
+              borderColor: "#50B5FF",
+              borderRadius: "10px",
             },
             "&:hover fieldset": {
-              borderColor: "#50B5FF", 
+              borderColor: "#50B5FF",
             },
             "&.Mui-focused fieldset": {
-              borderColor: "#50B5FF", 
+              borderColor: "#50B5FF",
               boxShadow: `0 0 0 1px #50B5FF`,
             },
-            color: "#50B5FF", 
           },
           "& .MuiInputLabel-root": {
             color: "#50B5FF",
             "&.Mui-focused": {
-              color: "#50B5FF", 
+              color: "#50B5FF",
             },
           },
         },

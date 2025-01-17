@@ -1,34 +1,32 @@
 import * as React from "react";
-import { extendTheme, styled, useColorScheme } from "@mui/material/styles";
+import { extendTheme, useColorScheme } from "@mui/material/styles";
 import Home from "@mui/icons-material/Home";
-import { AppProvider, Navigation, Router } from "@toolpad/core/AppProvider";
+import { AppProvider, Navigation } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { PageContainer } from "@toolpad/core/PageContainer";
 import {
   Avatar,
-  Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
   IconButton,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Popover,
-  Radio,
-  RadioGroup,
   Tooltip,
   Typography,
 } from "@mui/material";
-import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 const NAVIGATION: Navigation = [
   {
-    segment: "home",
+    segment: "todo",
     title: "To Do",
     icon: <Home />,
   },
 ];
-
-const demoTheme = extendTheme({
+const themeLayoutApp = extendTheme({
   colorSchemes: { light: true, dark: true },
   colorSchemeSelector: "class",
   breakpoints: {
@@ -57,6 +55,8 @@ function CustomThemeSwitcher() {
     null
   );
 
+  const router = useRouter();
+
   const toggleMenu = React.useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
       setMenuAnchorEl(isMenuOpen ? null : event.currentTarget);
@@ -66,7 +66,6 @@ function CustomThemeSwitcher() {
   );
 
   const { data: session }: any = useSession();
-  console.log(session.user.email)
   return (
     <React.Fragment>
       <Tooltip title="Settings" enterDelay={1000}>
@@ -87,84 +86,70 @@ function CustomThemeSwitcher() {
         }}
         disableAutoFocus
       >
-        <Box sx={{ p: 2 }}>
-          <FormControl>
-            <FormLabel id="custom-theme-switcher-label">Theme</FormLabel>
-            <Button
-              onClick={() => {
-                signOut();
-              }}
-            >
-              Logout
-            </Button>
-            <RadioGroup
-              aria-labelledby="custom-theme-switcher-label"
-              defaultValue="system"
-              name="custom-theme-switcher"
-              onChange={handleThemeChange}
-            >
-              <FormControlLabel
-                value="light"
-                control={<Radio />}
-                label="Light"
-              />
-              <FormControlLabel
-                value="system"
-                control={<Radio />}
-                label="System"
-              />
-              <FormControlLabel value="dark" control={<Radio />} label="Dark" />
-            </RadioGroup>
-          </FormControl>
-        </Box>
+        <List
+          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+        >
+          <ListItemButton
+            onClick={() => {
+              signOut();
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItemButton>
+          <ListItemButton
+            onClick={() => {
+              router.push("/todo/add");
+            }}
+          >
+            <ListItemIcon>
+              <CreateNewFolderIcon />
+            </ListItemIcon>
+            <ListItemText primary="Add Todo" />
+          </ListItemButton>
+        </List>
       </Popover>
     </React.Fragment>
   );
 }
 
-function useDemoRouter(initialPath: string): Router {
-  const [pathname, setPathname] = React.useState(initialPath);
+type Props = {
+  children: React.ReactNode;
+  window?: any;
+  hiddenSidebar?: boolean;
+};
 
-  const router = React.useMemo(() => {
-    return {
-      pathname,
-      searchParams: new URLSearchParams(),
-      navigate: (path: string | URL) => setPathname(String(path)),
-    };
-  }, [pathname]);
-
-  return router;
-}
-
-const Skeleton = styled("div")<{ height: number }>(({ theme, height }) => ({
-  backgroundColor: theme.palette.action.hover,
-  borderRadius: theme.shape.borderRadius,
-  height,
-  content: '" "',
-}));
-
-export default function DashboardLayoutBasic(props: any) {
-  const { window, children } = props;
+export default function DashboardLayoutBasic(props: Props) {
+  const { window, children, hiddenSidebar } = props;
 
   // Remove this const when copying and pasting into your project.
-  const demoWindow = window ? window() : undefined;
+  const windowLayout = window ? window() : undefined;
 
   return (
     <AppProvider
       navigation={NAVIGATION}
-      theme={demoTheme}
-      window={demoWindow}
+      theme={themeLayoutApp}
+      window={windowLayout}
       branding={{
+        logo: "",
         title: "Nodewave",
-        homeUrl: "/home",
+        homeUrl: "/todo",
       }}
     >
       <DashboardLayout
         slots={{
           toolbarActions: CustomThemeSwitcher,
         }}
+        defaultSidebarCollapsed={hiddenSidebar}
+        sx={{
+          "& .css-23htwk": {
+            background: "#f7f7f9",
+          },
+        }}
       >
-        <PageContainer>{children}</PageContainer>
+        {hiddenSidebar ? children : <PageContainer>{children}</PageContainer>}
       </DashboardLayout>
     </AppProvider>
   );
